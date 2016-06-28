@@ -16,7 +16,8 @@
   },
   "scripts": {
     "babel": "babel ./source --presets babel-preset-stage-1 --watch --out-dir compiled",
-    "start" : "nodemon ./compiled/index.js ./index.html",
+    "nodemon" : "nodemon ./compiled/index.js ./index.html",
+    "start" : "node ./compiled/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Alexandr Mozolevsky <erick.android.freelance@gmail.com>",
