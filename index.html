@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script>
+      var socket = io();
+      socket.connect('http://127.0.0.1:3000');
+      var time;
+      socket.on('getusername', function(data) {
+        console.log(new Date().getTime() - time);
+        console.log('Server said:', data)
+      })
+
+      function connect() {
+        console.log('CONNECT');
+        time = new Date().getTime();
+        socket.emit('established',
+          { message: 'Connected people' }
+        );
+      }
+    </script>
+  </head>
+  <body>
+    <h3>Hello world!</h3>
+    <button onclick="connect()">connect</button>
+  </body>
+</html>
