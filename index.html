@@ -2,24 +2,56 @@
   <head>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script>
-      var socket = io();
-      var time;
-      socket.on('getusername', function(data) {
-        console.log(new Date().getTime() - time);
-        console.log('Server said:', data)
-      })
+      let socket = io();
+      let time;
+      let userData = {};
 
-      function connect() {
-        console.log('CONNECT');
-        time = new Date().getTime();
-        socket.emit('established',
-          { message: 'Connected people' }
-        );
+      socket.on('serverLogin', (data) => {
+        userData = data;
+        console.log('serverLogin', JSON.stringify(userData));
+        document.getElementById('response').innerHTML = JSON.stringify(userData);
+      });
+
+      socket.on('serverRegistration', (data) => {
+        userData = data;
+        console.log('serverRegistration', JSON.stringify(userData));
+        document.getElementById('response').innerHTML = JSON.stringify(userData);
+      });
+
+      socket.on('serverLogout', (data) => {
+        userData = data;
+        console.log('serverLogout', JSON.stringify(userData));
+        document.getElementById('response').innerHTML = JSON.stringify(userData);
+      });
+
+      function login(e) {
+        e.preventDefault();
+        let username = document.getElementById('log_username').value;
+        let userId = document.getElementById('log_userId').value;
+        socket.emit('clientLogin',
+        { username, userId });
+      }
+
+      function registration(e) {
+        e.preventDefault();
+        let username = document.getElementById('reg_username').value;
+        socket.emit('clientRegistration',
+        { username, date: new Date() });
       }
     </script>
   </head>
   <body>
-    <h3>Hello world!</h3>
-    <button onclick="connect()">connect</button>
+    <h3>Hello user!</h3>
+    <form id="form_registration" onsubmit="registration(event)">
+      <input type="text" id="reg_username"/><br/>
+      <button type="submit">create new user</button>
+    </form>
+    <form id="form_login" onsubmit="login(event)">
+      <input type="text" id="log_username"/><br/>
+      <input type="password" id="log_userId"/><br/>
+      <button type="submit">login as user</button>
+    </form><br/>
+    Response:
+    <span id="response"></span>
   </body>
 </html>
